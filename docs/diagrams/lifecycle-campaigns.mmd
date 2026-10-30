@@ -1,0 +1,16 @@
+flowchart LR
+  signup[Explicit newsletter opt-in] --> zap[Zapier trigger]
+  zap --> welcome[Compose welcome message]
+  cart[Cart left behind] --> wait[Wait 1 hour]
+  wait --> eligible{Still opted in, no purchase, not suppressed?}
+  eligible -->|yes| recovery[Compose basket reminder]
+  eligible -->|no| stop[Stop journey]
+  dormant[No order for 60 days] --> wait2[Wait until 60-day threshold]
+  wait2 --> eligible2{Still opted in, no recent order, not suppressed?}
+  eligible2 -->|yes| reengage[Compose win-back message]
+  eligible2 -->|no| stop
+  welcome --> api[POST /webhooks/zapier]
+  recovery --> api
+  reengage --> api
+  api --> message[Shared composer returns subject + HTML/text]
+  message --> provider[Verified sender sends]

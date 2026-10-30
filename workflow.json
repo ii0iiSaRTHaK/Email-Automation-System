@@ -1,0 +1,89 @@
+{
+  "name": "Fieldnote Supply — Support Inbox Drafts",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": { "item": [{ "mode": "everyMinute" }] },
+        "simple": false,
+        "filters": {
+          "readStatus": "unread",
+          "q": "to:support@fieldnote.store -from:support@fieldnote.store"
+        }
+      },
+      "id": "4a9610a0-90b0-4f9c-9c01-866ab2cead8f",
+      "name": "Gmail Trigger",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.4,
+      "position": [-620, 260]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const email = $json;\nconst rawFrom = typeof email.from === 'string' ? email.from : (email.from?.text || email.from?.value?.[0]?.address || '');\nconst address = rawFrom.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}/i)?.[0];\nconst text = email.textPlain || email.text || email.snippet || '';\nif (!email.id || !email.threadId || !address || !text.trim()) {\n  throw new Error('Expected a Gmail message ID, thread ID, sender address, and plain-text body. Check the Gmail Trigger output.');\n}\nreturn { json: { messageId: email.id, threadId: email.threadId, from: address, name: rawFrom.replace(/<[^>]+>/, '').replace(/\"/g, '').trim(), subject: email.subject || '', text } };"
+      },
+      "id": "3eb90737-a7fc-47b1-8ab4-bf6fdf76a6b7",
+      "name": "Normalize Customer Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-390, 260]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:3000/webhooks/n8n/inbound",
+        "sendHeaders": false,
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": { "timeout": 20000 }
+      },
+      "id": "adaed377-4c63-4c2f-a392-42ad8576e4fc",
+      "name": "Classify and Draft Reply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-130, 260]
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "operation": "create",
+        "subject": "={{ $json.case.replySubject }}",
+        "emailType": "text",
+        "message": "={{ $json.case.replyBody }}",
+        "options": {
+          "threadId": "={{ $('Normalize Customer Email').item.json.threadId }}",
+          "toEmail": "={{ $('Normalize Customer Email').item.json.from }}"
+        }
+      },
+      "id": "bbcb4fa4-2c92-43a0-a59c-48ee9c0c1957",
+      "name": "Create Gmail Reply Draft",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [120, 260]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "markAsRead",
+        "messageId": "={{ $('Normalize Customer Email').item.json.messageId }}"
+      },
+      "id": "12a58b78-ec64-422b-92e4-987192420157",
+      "name": "Mark Source Email Read",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [380, 260]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": { "main": [[{ "node": "Normalize Customer Email", "type": "main", "index": 0 }]] },
+    "Normalize Customer Email": { "main": [[{ "node": "Classify and Draft Reply", "type": "main", "index": 0 }]] },
+    "Classify and Draft Reply": { "main": [[{ "node": "Create Gmail Reply Draft", "type": "main", "index": 0 }]] },
+    "Create Gmail Reply Draft": { "main": [[{ "node": "Mark Source Email Read", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "79c323bd-93d0-4c6d-85eb-f4fa9d4a5510",
+  "meta": { "templateCredsSetupCompleted": false },
+  "tags": []
+}

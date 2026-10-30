@@ -1,0 +1,24 @@
+.inbox-grid{display:grid;grid-template-columns:minmax(290px,.85fr) minmax(360px,1.3fr);gap:30px;align-items:start}
+.inbound-form,.case-panel{background:#fff;padding:20px}
+.inbound-form h2,.case-panel h2{font:500 19px var(--serif);margin:0 0 5px}
+.inbound-form>p,.case-panel-head p{font-size:10px;color:var(--muted);line-height:1.5;margin:0 0 16px}
+.inbound-form label{display:block;font-size:10px;font-weight:600;color:#5c6a60;margin-bottom:11px}
+.inbound-form textarea{width:100%;resize:vertical;border:1px solid #dfe3dc;border-radius:4px;background:#fff;padding:10px 11px;margin-top:6px;color:var(--ink);font:12px/1.5 var(--font);outline:none}
+.inbound-form textarea:focus{border-color:var(--green)}
+.inbound-form .primary{width:100%;margin-top:7px}
+.form-note{display:block;color:var(--muted);font-size:9px;line-height:1.5;margin-top:11px}
+.case-panel-head{display:flex;align-items:flex-start;justify-content:space-between}
+.case-panel-head p{margin-bottom:12px}
+.support-case{padding:16px 0;display:grid;grid-template-columns:1fr auto;gap:6px 12px}
+.support-case b{font-size:11px;font-weight:600}
+.support-case .case-from,.support-case .case-question{font-size:10px;color:#67756b}
+.support-case .case-from{grid-column:1/-1}
+.support-case .case-question{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.support-case .case-actions{display:flex;align-items:center;gap:9px}
+.review-pill{font-size:9px;background:#f4ede2;color:#866036;padding:5px 8px;border-radius:12px;white-space:nowrap}
+.policy-pill{font-size:9px;background:var(--tint2);color:#4e6a55;padding:5px 8px;border-radius:12px;white-space:nowrap}
+.inbox-rule{margin-top:20px;padding:14px 16px;background:#e8ece5;display:flex;align-items:center;gap:13px;font-size:10px;color:#657166}
+.inbox-rule b{color:#3f5143}.inbox-rule code{background:#fff;padding:7px 9px;font-size:10px;color:var(--green-dark);white-space:nowrap}
+.inbox-rule span{line-height:1.5}
+.recipe-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.recipe-top span{color:#607263;font-size:9px;text-align:right}.recipe dl{margin:12px 0;display:grid;gap:9px}.recipe dl div{display:grid;gap:3px}.recipe dt{font-size:9px;color:#79847c}.recipe dd{font-size:10px;line-height:1.5;margin:0;color:#3f5045}.recipe-status{display:block;font-size:9px;color:#7a827b;margin-top:7px}
+@media(max-width:700px){.inbox-grid{grid-template-columns:1fr;gap:16px}.inbound-form,.case-panel{padding:15px}.inbox-rule{align-items:flex-start;flex-direction:column;gap:7px}}

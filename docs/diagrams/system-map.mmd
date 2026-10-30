@@ -1,0 +1,24 @@
+flowchart LR
+  subgraph PRE[Customer lifecycle · Zapier]
+    optin[Opt-in event] --> welcome[Welcome email]
+    cart[Abandoned cart] --> wait[Delay + eligibility re-check]
+    wait --> recovery[Recovery email]
+    dormant[No order for 60 days] --> winback[Win-back email]
+  end
+  subgraph POST[Store events · Make]
+    shopify[Shopify order / fulfillment / return] --> router[Router by event type]
+  end
+  subgraph SHARED[Shared message service · Node.js]
+    api[Authenticated webhook API] --> compose[Validate + compose message]
+    policy[Store policy JSON] --> support[Classify + draft support reply]
+    llm[Optional OpenAI API] -. wording only .-> support
+  end
+  welcome --> api
+  recovery --> api
+  winback --> api
+  router --> api
+  compose --> provider[Verified email provider]
+  inbox[Gmail support inbox] --> n8n[n8n trigger + normalize]
+  n8n --> support
+  support --> draft[Gmail thread draft]
+  draft --> human[Person reviews and sends]

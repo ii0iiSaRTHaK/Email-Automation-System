@@ -1,0 +1,10 @@
+flowchart LR
+  order[Shopify: order placed] --> make[Make scenario]
+  fulfilled[Shopify: fulfillment with tracking] --> make
+  returned[Shopify: return received / inspected] --> make
+  make --> normalize[Normalize event + stable event ID]
+  normalize --> router[Make Router: order.placed / order.shipped / return.received]
+  router --> api[POST /webhooks/make]
+  api --> validate[Validate + compose matching template]
+  validate --> email[Connected email provider sends update]
+  email --> customer[Customer receives store update]

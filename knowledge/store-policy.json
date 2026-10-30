@@ -1,0 +1,28 @@
+{
+  "store": "Fieldnote Supply",
+  "currency": "USD",
+  "returns": {
+    "window_days": 30,
+    "condition": "unused and in original condition",
+    "start": "Email support@fieldnote.store with your order number to start a return.",
+    "refund_timing": "After the return is received and inspected, refunds go to the original payment method. Banks may take 5–10 business days to post them.",
+    "exceptions": "Damaged, incorrect, or personalized items need a support specialist to review the order."
+  },
+  "shipping": {
+    "processing": "Orders are packed within 1–2 business days.",
+    "transit": "US delivery usually takes 3–5 business days after dispatch.",
+    "tracking": "A tracking link is emailed when the parcel is dispatched."
+  },
+  "orders": {
+    "status": "Order-specific status must be checked in the store system. If no live order lookup is connected, ask for the order number and leave the message for a person."
+  },
+  "support": {
+    "email": "support@fieldnote.store",
+    "hours": "Monday–Friday, 9 am–5 pm Eastern Time"
+  },
+  "catalogue": [
+    { "name": "Field Notes A5 Notebook", "details": "Hardcover, 160 ruled pages, recycled paper; $18" },
+    { "name": "Weekly Desk Planner", "details": "Undated, lay-flat, 52 weekly spreads; $24" },
+    { "name": "Pocket Memo Set", "details": "Three pocket notebooks, 48 pages each; $12" }
+  ]
+}

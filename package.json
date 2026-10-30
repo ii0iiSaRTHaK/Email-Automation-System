@@ -1,0 +1,8 @@
+{
+  "name": "fieldnote-email-automation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A runnable email automation portfolio demo for a fictional stationery shop.",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}

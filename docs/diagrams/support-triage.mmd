@@ -1,0 +1,16 @@
+flowchart LR
+  inbox[Gmail: new customer email] --> trigger[n8n Gmail Trigger]
+  trigger --> normalize[Normalize sender, subject, body, message ID, thread ID]
+  normalize --> api[POST /webhooks/n8n/inbound]
+  api --> dedupe{Seen message ID?}
+  dedupe -->|yes| existing[Return existing case]
+  dedupe -->|no| classify[Classify intent against store policy]
+  policy[(store-policy.json)] --> classify
+  classify --> grounded[Create policy-grounded reply draft]
+  llm{OpenAI key available?} -. optional wording .-> grounded
+  grounded --> review{Sensitive or uncertain?}
+  review -->|yes| human[Flag for staff review]
+  review -->|no| create[Create Gmail reply draft in original thread]
+  human --> create
+  create --> done[Staff reviews and sends manually]
+  create --> read[Mark source message read after draft succeeds]
